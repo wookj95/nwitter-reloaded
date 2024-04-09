@@ -34,6 +34,7 @@ const AvatarUpload = styled.label`
     width: 50px;
   }
 `;
+
 const AvatarImg = styled.img`
   width: 100%;
 `;

@@ -6,8 +6,9 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
 const Text = styled.span`
-  font: 24px;
+  font-size: 24px;
 `;
 
 export default function LoadingScreen() {

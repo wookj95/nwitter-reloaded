@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { auth } from "../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
 import {
   Error,
   Form,
@@ -10,7 +10,7 @@ import {
   Switcher,
   Title,
   Wrapper,
-} from "../components/auth-commponents";
+} from "../components/auth-components";
 import GithubButton from "../components/github-btn";
 
 export default function CreateAccount() {
@@ -30,8 +30,8 @@ export default function CreateAccount() {
     }
   };
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    setError("");
     e.preventDefault();
+    setError("");
     if (isLoading || email === "" || password === "") return;
     try {
       setLoading(true);
@@ -47,13 +47,13 @@ export default function CreateAccount() {
   };
   return (
     <Wrapper>
-      <Title>Log Into 𝕏</Title>
+      <Title>Log into 𝕏</Title>
       <Form onSubmit={onSubmit}>
         <Input
           onChange={onChange}
           name="email"
           value={email}
-          placeholder="Eamil"
+          placeholder="Email"
           type="email"
           required
         />
@@ -65,12 +65,12 @@ export default function CreateAccount() {
           type="password"
           required
         />
-        <Input type="submit" value={isLoading ? "Loading" : "Log in"} />
+        <Input type="submit" value={isLoading ? "Loading..." : "Log in"} />
       </Form>
       {error !== "" ? <Error>{error}</Error> : null}
       <Switcher>
-        Don't have an account?
-        <Link to="/create-account"> Create one &rarr;</Link>
+        Don't have an account?{" "}
+        <Link to="/create-account">Create one &rarr;</Link>
       </Switcher>
       <GithubButton />
     </Wrapper>

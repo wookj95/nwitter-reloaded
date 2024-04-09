@@ -1,16 +1,16 @@
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import React, { useState } from "react";
+import { useState } from "react";
 import { auth } from "../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 import {
-  Error,
   Form,
+  Error,
   Input,
   Switcher,
   Title,
   Wrapper,
-} from "../components/auth-commponents";
+} from "../components/auth-components";
 import GithubButton from "../components/github-btn";
 
 export default function CreateAccount() {
@@ -33,8 +33,8 @@ export default function CreateAccount() {
     }
   };
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    setError("");
     e.preventDefault();
+    setError("");
     if (isLoading || name === "" || email === "" || password === "") return;
     try {
       setLoading(true);
@@ -71,7 +71,7 @@ export default function CreateAccount() {
           onChange={onChange}
           name="email"
           value={email}
-          placeholder="Eamil"
+          placeholder="Email"
           type="email"
           required
         />
@@ -83,12 +83,14 @@ export default function CreateAccount() {
           type="password"
           required
         />
-        <Input type="submit" value={isLoading ? "Loading" : "Create account"} />
+        <Input
+          type="submit"
+          value={isLoading ? "Loading..." : "Create Account"}
+        />
       </Form>
       {error !== "" ? <Error>{error}</Error> : null}
       <Switcher>
-        Already have an account?{""}
-        <Link to="/login"> Log in &rarr;</Link>
+        Already have an account? <Link to="/login">Log in &rarr;</Link>
       </Switcher>
       <GithubButton />
     </Wrapper>
