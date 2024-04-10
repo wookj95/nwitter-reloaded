@@ -1,10 +1,10 @@
 import {
   collection,
-  /*  getDocs, */
   limit,
   onSnapshot,
   orderBy,
   query,
+  Timestamp,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
@@ -18,7 +18,7 @@ export interface ITweet {
   tweet: string;
   userId: string;
   username: string;
-  createdAt: number;
+  createdAt: Timestamp;
 }
 
 const Wrapper = styled.div`
@@ -66,11 +66,14 @@ export default function Timeline() {
         setTweet(tweets);
       });
     };
+
     fetchTweets();
+
     return () => {
       unsubscribe && unsubscribe();
     };
   }, []);
+
   return (
     <Wrapper>
       {tweets.map((tweet) => (

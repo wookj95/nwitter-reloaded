@@ -46,10 +46,22 @@ const DeleteButton = styled.button`
   cursor: pointer;
 `;
 
-export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
+const TimeStamp = styled.span`
+  font-size: 12px;
+  color: #666;
+`;
+
+export default function Tweet({
+  username,
+  photo,
+  tweet,
+  userId,
+  id,
+  createdAt,
+}: ITweet) {
   const user = auth.currentUser;
   const onDelete = async () => {
-    const ok = confirm("Are you sure you want to delete this tweet?");
+    const ok = window.confirm("Are you sure you want to delete this tweet?");
     if (!ok || user?.uid !== userId) return;
     try {
       await deleteDoc(doc(db, "tweets", id));
@@ -58,16 +70,16 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
         await deleteObject(photoRef);
       }
     } catch (e) {
-      console.log(e);
-    } finally {
-      //
+      console.error(e);
     }
   };
+
   return (
     <Wrapper>
       <Column>
         <Username>{username}</Username>
         <Payload>{tweet}</Payload>
+        <TimeStamp>{createdAt.toString()}</TimeStamp>
         {user?.uid === userId ? (
           <DeleteButton onClick={onDelete}>Delete</DeleteButton>
         ) : null}
