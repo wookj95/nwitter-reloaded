@@ -4,7 +4,6 @@ import {
   onSnapshot,
   orderBy,
   query,
-  Timestamp,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
@@ -18,7 +17,7 @@ export interface ITweet {
   tweet: string;
   userId: string;
   username: string;
-  createdAt: Timestamp;
+  createdAt: number;
 }
 
 const Wrapper = styled.div`

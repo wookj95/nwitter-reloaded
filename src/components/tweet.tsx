@@ -74,12 +74,14 @@ export default function Tweet({
     }
   };
 
+  const formattedDate = new Date(createdAt).toLocaleString();
+
   return (
     <Wrapper>
       <Column>
         <Username>{username}</Username>
         <Payload>{tweet}</Payload>
-        <TimeStamp>{createdAt.toString()}</TimeStamp>
+        <TimeStamp>{formattedDate}</TimeStamp>
         {user?.uid === userId ? (
           <DeleteButton onClick={onDelete}>Delete</DeleteButton>
         ) : null}
