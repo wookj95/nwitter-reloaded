@@ -1,8 +1,17 @@
+import { useState } from "react";
 import { styled } from "styled-components";
-import { ITweet } from "./timeline";
 import { auth, db, storage } from "../firebase";
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
+
+export interface ITweet {
+  id: string;
+  photo?: string;
+  tweet: string;
+  userId: string;
+  username: string;
+  createdAt: number;
+}
 
 const Wrapper = styled.div`
   display: grid;
@@ -46,6 +55,19 @@ const DeleteButton = styled.button`
   cursor: pointer;
 `;
 
+const EditButton = styled.button`
+  background-color: dodgerblue;
+  color: white;
+  font-weight: 600;
+  border: 0;
+  font-size: 12px;
+  padding: 5px 10px;
+  text-transform: uppercase;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+`;
+
 const TimeStamp = styled.span`
   font-size: 12px;
   color: #666;
@@ -60,6 +82,9 @@ export default function Tweet({
   createdAt,
 }: ITweet) {
   const user = auth.currentUser;
+  const [editing, setEditing] = useState(false);
+  const [editedTweet, setEditedTweet] = useState(tweet);
+
   const onDelete = async () => {
     const ok = window.confirm("Are you sure you want to delete this tweet?");
     if (!ok || user?.uid !== userId) return;
@@ -74,17 +99,54 @@ export default function Tweet({
     }
   };
 
+  const onEdit = () => {
+    setEditing(true);
+  };
+
+  const onSaveEdit = async () => {
+    try {
+      const tweetRef = doc(db, "tweets", id);
+      await updateDoc(tweetRef, {
+        tweet: editedTweet,
+      });
+      setEditing(false);
+    } catch (error) {
+      console.error("Tweet modification error:", error);
+    }
+  };
+
+  const onCancelEdit = () => {
+    setEditing(false);
+    setEditedTweet(tweet);
+  };
+
   const formattedDate = new Date(createdAt).toLocaleString();
 
   return (
     <Wrapper>
       <Column>
         <Username>{username}</Username>
-        <Payload>{tweet}</Payload>
+        {editing ? (
+          <textarea
+            value={editedTweet}
+            onChange={(e) => setEditedTweet(e.target.value)}
+          />
+        ) : (
+          <Payload>{tweet}</Payload>
+        )}
         <TimeStamp>{formattedDate}</TimeStamp>
-        {user?.uid === userId ? (
-          <DeleteButton onClick={onDelete}>Delete</DeleteButton>
-        ) : null}
+        {user?.uid === userId && !editing && (
+          <>
+            <EditButton onClick={onEdit}>수정</EditButton>
+            <DeleteButton onClick={onDelete}>삭제</DeleteButton>
+          </>
+        )}
+        {editing && (
+          <>
+            <button onClick={onSaveEdit}>저장</button>
+            <button onClick={onCancelEdit}>취소</button>
+          </>
+        )}
       </Column>
       <Column>{photo ? <Photo src={photo} /> : null}</Column>
     </Wrapper>
