@@ -135,6 +135,7 @@ export default function Tweet({
           <Payload>{tweet}</Payload>
         )}
         <TimeStamp>{formattedDate}</TimeStamp>
+        <div></div>
         {user?.uid === userId && !editing && (
           <>
             <EditButton onClick={onEdit}>수정</EditButton>
