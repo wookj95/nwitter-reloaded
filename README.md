@@ -4,4 +4,4 @@
 
 https://nomadcoders.co/nwitter/lobby 트위터 클론코딩
 
-주소 : nwitter-reloaded-c96eb.web.app
+URL : nwitter-reloaded-c96eb.web.app
